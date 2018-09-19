@@ -100,9 +100,9 @@ final public class PopupDialogContainerView: UIView {
         shadowContainer.translatesAutoresizingMaskIntoConstraints = false
         shadowContainer.backgroundColor = UIColor.clear
         shadowContainer.layer.shadowColor = UIColor.black.cgColor
-        shadowContainer.layer.shadowRadius = 5
-        shadowContainer.layer.shadowOpacity = 0.4
-        shadowContainer.layer.shadowOffset = CGSize(width: 0, height: 0)
+        shadowContainer.layer.shadowRadius = 4
+        shadowContainer.layer.shadowOpacity = 0.08
+        shadowContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
         shadowContainer.layer.cornerRadius = 4
         return shadowContainer
     }()

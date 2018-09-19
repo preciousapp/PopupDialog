@@ -35,8 +35,15 @@ open class PopupDialogButton: UIButton {
 
     /// The font and size of the button title
     @objc open dynamic var titleFont: UIFont? {
-        get { return titleLabel?.font }
-        set { titleLabel?.font = newValue }
+//        get { return titleLabel?.font }
+//        set { titleLabel?.font = newValue }
+        get {
+            return mutableAttributedString.attribute(NSAttributedStringKey.font, at: 0, effectiveRange: nil) as! UIFont
+        }
+        set {
+            mutableAttributedString.addAttribute(NSAttributedStringKey.font, value: newValue, range:NSMakeRange(0, mutableAttributedString.string.count))
+            setAttributedTitle(mutableAttributedString, for: UIControlState())
+        }
     }
     
     /// The height of the button
@@ -44,8 +51,16 @@ open class PopupDialogButton: UIButton {
     
     /// The title color of the button
     @objc open dynamic var titleColor: UIColor? {
-        get { return self.titleColor(for: UIControlState()) }
-        set { setTitleColor(newValue, for: UIControlState()) }
+//        get { return self.titleColor(for: UIControlState()) }
+//        set { setTitleColor(newValue, for: UIControlState()) }
+        get {
+            return mutableAttributedString.attribute(NSAttributedStringKey.foregroundColor, at: 0, effectiveRange: nil) as! UIColor
+        }
+        set {
+            mutableAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: newValue, range:NSMakeRange(0, mutableAttributedString.string.count))
+            setAttributedTitle(mutableAttributedString, for: UIControlState())
+        }
+
     }
 
     /// The background color of the button
@@ -89,6 +104,13 @@ open class PopupDialogButton: UIButton {
         line.alpha = 0
         return line
     }()
+    
+    fileprivate lazy var mutableAttributedString: NSMutableAttributedString = {
+        let attributedString = NSMutableAttributedString(string: " ", attributes: [NSAttributedStringKey.font : defaultTitleFont,
+                                                                                   NSAttributedStringKey.foregroundColor : defaultTitleColor,
+                                                                                   NSAttributedStringKey.kern : 2])
+        return attributedString
+    }()
 
     // MARK: Internal
 
@@ -120,7 +142,12 @@ open class PopupDialogButton: UIButton {
         super.init(frame: .zero)
 
         // Set the button title
-        setTitle(title, for: UIControlState())
+        // NOTE: Currently using AttributedString to give title label kern value. This makes font and textColor setting brittle.
+        // Make sure you set UIApperance values of buttons
+//        setTitle(title, for: UIControlState())
+        let attrString = mutableAttributedString
+        attrString.mutableString.setString(title.uppercased())
+        setAttributedTitle(attrString, for: UIControlState())
 
         self.dismissOnTap = dismissOnTap
 
@@ -137,8 +164,8 @@ open class PopupDialogButton: UIButton {
     open func setupView() {
 
         // Default appearance
-        setTitleColor(defaultTitleColor, for: UIControlState())
-        titleLabel?.font              = defaultTitleFont
+//        setTitleColor(defaultTitleColor, for: UIControlState())
+//        titleLabel?.font              = defaultTitleFont
         backgroundColor               = defaultButtonColor
         separator.backgroundColor     = defaultSeparatorColor
         leftSeparator.backgroundColor = defaultSeparatorColor

@@ -38,11 +38,11 @@ open class PopupDialogButton: UIButton {
 //        get { return titleLabel?.font }
 //        set { titleLabel?.font = newValue }
         get {
-            return mutableAttributedString.attribute(NSAttributedStringKey.font, at: 0, effectiveRange: nil) as! UIFont
+            return mutableAttributedString.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: nil) as? UIFont
         }
         set {
-            mutableAttributedString.addAttribute(NSAttributedStringKey.font, value: newValue, range:NSMakeRange(0, mutableAttributedString.string.count))
-            setAttributedTitle(mutableAttributedString, for: UIControlState())
+            mutableAttributedString.addAttribute(NSAttributedString.Key.font, value: newValue as Any, range: NSRange(location: 0, length: mutableAttributedString.string.count))
+            setAttributedTitle(mutableAttributedString, for: UIControl.State())
         }
     }
     
@@ -51,16 +51,15 @@ open class PopupDialogButton: UIButton {
     
     /// The title color of the button
     @objc open dynamic var titleColor: UIColor? {
-//        get { return self.titleColor(for: UIControlState()) }
-//        set { setTitleColor(newValue, for: UIControlState()) }
+//        get { return self.titleColor(for: UIControl.State()) }
+//        set { setTitleColor(newValue, for: UIControl.State()) }
         get {
-            return mutableAttributedString.attribute(NSAttributedStringKey.foregroundColor, at: 0, effectiveRange: nil) as! UIColor
+            return mutableAttributedString.attribute(NSAttributedString.Key.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
         }
         set {
-            mutableAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: newValue, range:NSMakeRange(0, mutableAttributedString.string.count))
-            setAttributedTitle(mutableAttributedString, for: UIControlState())
+            mutableAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: newValue as Any, range: NSRange(location: 0, length: mutableAttributedString.string.count))
+            setAttributedTitle(mutableAttributedString, for: UIControl.State())
         }
-
     }
 
     /// The background color of the button
@@ -106,9 +105,9 @@ open class PopupDialogButton: UIButton {
     }()
     
     fileprivate lazy var mutableAttributedString: NSMutableAttributedString = {
-        let attributedString = NSMutableAttributedString(string: " ", attributes: [NSAttributedStringKey.font : defaultTitleFont,
-                                                                                   NSAttributedStringKey.foregroundColor : defaultTitleColor,
-                                                                                   NSAttributedStringKey.kern : 2])
+        let attributedString = NSMutableAttributedString(string: " ", attributes: [NSAttributedString.Key.font: defaultTitleFont,
+                                                                                   NSAttributedString.Key.foregroundColor: defaultTitleColor,
+                                                                                   NSAttributedString.Key.kern: 2])
         return attributedString
     }()
 
@@ -144,10 +143,10 @@ open class PopupDialogButton: UIButton {
         // Set the button title
         // NOTE: Currently using AttributedString to give title label kern value. This makes font and textColor setting brittle.
         // Make sure you set UIApperance values of buttons
-//        setTitle(title, for: UIControlState())
+//        setTitle(title, for: UIControl.State())
         let attrString = mutableAttributedString
         attrString.mutableString.setString(title.uppercased())
-        setAttributedTitle(attrString, for: UIControlState())
+        setAttributedTitle(attrString, for: UIControl.State())
 
         self.dismissOnTap = dismissOnTap
 
@@ -164,7 +163,7 @@ open class PopupDialogButton: UIButton {
     open func setupView() {
 
         // Default appearance
-//        setTitleColor(defaultTitleColor, for: UIControlState())
+//        setTitleColor(defaultTitleColor, for: UIControl.State())
 //        titleLabel?.font              = defaultTitleFont
         backgroundColor               = defaultButtonColor
         separator.backgroundColor     = defaultSeparatorColor
